@@ -1110,7 +1110,7 @@
     z-index: 1;
   }
   .scenario-tab .tab-sub {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.02em;
     opacity: 0.7;
@@ -1389,6 +1389,110 @@
     margin: 8px 0 12px;
   }
 
+  /* ============ BADGES COLLECTIF / INDIVIDUEL ============ */
+  .scope-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .scope-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .scope-badge.collectif {
+    background: rgba(0, 122, 255, 0.12);
+    color: var(--blue-2);
+  }
+  .scope-badge.individuel {
+    background: rgba(175, 82, 222, 0.14);
+    color: #8829B8;
+  }
+
+  /* Bandeau explicatif collectif/individuel */
+  .scope-legend {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .scope-legend-item {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+  }
+  .scope-legend-item.collectif { border-left: 3px solid var(--blue); }
+  .scope-legend-item.individuel { border-left: 3px solid var(--purple); }
+  .scope-legend-icon {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scope-legend-icon svg { width: 16px; height: 16px; }
+  .scope-legend-item.collectif .scope-legend-icon { background: rgba(0,122,255,0.12); color: var(--blue-2); }
+  .scope-legend-item.individuel .scope-legend-icon { background: rgba(175,82,222,0.14); color: #8829B8; }
+  .scope-legend-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .scope-legend-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  /* En-tête de sous-section avec badge de portée */
+  .sub-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px 0 12px;
+  }
+  .sub-head-row .sub-head { margin: 0; }
+
+  .sim-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .sim-head-row .sim-eyebrow { margin-bottom: 0; }
+
+  /* Mini-badge inline pour marquer un item collectif/individuel dans une liste */
+  .scope-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 7px 1px 5px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    vertical-align: middle;
+    margin-left: 4px;
+    white-space: nowrap;
+  }
+  .scope-mini svg { width: 10px; height: 10px; flex-shrink: 0; }
+  .scope-mini.collectif { background: rgba(0,122,255,0.12); color: var(--blue-2); }
+  .scope-mini.individuel { background: rgba(175,82,222,0.14); color: #8829B8; }
+
   /* Specific iOS 26 vibe: continuous corners + specular highlight */
   .specular {
     position: relative;
@@ -1466,14 +1570,22 @@
     <div class="section-head fade-up">
       <div class="section-num green specular">1</div>
       <div class="section-meta">
-        <div class="section-eyebrow">Diagnostic énergétique</div>
-        <h2 class="section-title">Ce que disent les DPE</h2>
+        <div class="section-eyebrow">Sujet n°1 · Énergie</div>
+        <h2 class="section-title">Le DPE de l'immeuble</h2>
       </div>
+    </div>
+
+    <div class="sub-head-row fade-up">
+      <span class="sub-head">Diagnostic de performance énergétique</span>
+      <span class="scope-badge collectif">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>
+        Collectif
+      </span>
     </div>
 
     <div class="card fade-up">
       <p class="card-body">
-        Deux bâtiments construits en <strong>2006</strong>, 92 logements sur <strong>5 734 m²</strong>.
+        Ce diagnostic porte sur <strong>l'ensemble de l'immeuble</strong> (parties communes et performance globale), pas sur votre logement en particulier. Deux bâtiments construits en <strong>2006</strong>, 92 logements sur <strong>5 734 m²</strong>.
         <strong>Bons élèves climatiques</strong> grâce au tout-électrique, mais les postes de chauffage et d'eau chaude restent lourds.
       </p>
     </div>
@@ -1571,8 +1683,8 @@
       <div class="card-eyebrow text-green">◆ Pack 1 · Court terme</div>
       <div class="card-title">Travaux essentiels</div>
       <ul class="bullets green mt-12">
-        <li>Isolation toiture-terrasse par l'extérieur (R ≥ 6,5)</li>
-        <li>Remplacement des convecteurs par panneaux rayonnants</li>
+        <li>Isolation toiture-terrasse par l'extérieur (R ≥ 6,5)<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
+        <li>Remplacement des convecteurs par panneaux rayonnants<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
       </ul>
       <div class="row-list mt-12">
         <div class="row">
@@ -1584,14 +1696,17 @@
           <span class="row-value">74 100 - 100 400 €</span>
         </div>
       </div>
+      <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
+        ⓘ L'isolation toiture est une partie commune (votée en AG). Les convecteurs sont dans votre logement : leur remplacement est à votre charge, à votre rythme.
+      </p>
     </div>
 
     <div class="card green-tinted fade-up specular">
       <div class="card-eyebrow text-green">◆◆ Pack 2 · Pour atteindre B</div>
       <div class="card-title">Travaux à envisager</div>
       <ul class="bullets green mt-12">
-        <li>Remplacement des émetteurs par PAC air/air</li>
-        <li>Installation de panneaux photovoltaïques</li>
+        <li>Remplacement des émetteurs par PAC air/air<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
+        <li>Installation de panneaux photovoltaïques<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
       </ul>
       <div class="row-list mt-12">
         <div class="row">
@@ -1607,6 +1722,33 @@
         ⓘ L'isolation seule ne suffit pas pour atteindre B : le changement de chauffage est indispensable.
       </p>
     </div>
+
+    <div class="card fade-up specular" style="border-left:3px solid var(--purple);">
+      <div class="card-eyebrow" style="color:#8829B8;">
+        <span class="scope-badge individuel" style="margin:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+          À votre charge, dans votre logement
+        </span>
+      </div>
+      <div class="card-body mt-12">
+        En tout-électrique, plusieurs équipements sont <strong>privatifs</strong> : leur remplacement vous revient, individuellement, et ne se vote pas en AG.
+        <ul class="bullets blue mt-12">
+          <li><strong>Ballon d'eau chaude (ECS)</strong> : à lui seul 47% de la facture énergétique. Le remplacer par un chauffe-eau thermodynamique est l'un des gestes les plus rentables, à votre initiative</li>
+          <li><strong>Convecteurs électriques</strong> : leur remplacement par des panneaux rayonnants ou une PAC air/air est à votre charge</li>
+        </ul>
+        <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
+          ⓘ Ces travaux privatifs peuvent ouvrir droit à MaPrimeRénov' et à un éco-PTZ individuel, indépendamment du projet collectif de la copropriété.
+        </p>
+      </div>
+    </div>
+
+    <div class="card blue-tinted fade-up specular">
+      <div class="card-eyebrow text-blue">→ La suite</div>
+      <div class="card-title">Le ravalement, prochaine grande étape collective</div>
+      <p class="card-body mt-12">
+        Le DPE pose le diagnostic. Le <strong>ravalement de façade</strong>, lui, est une <strong>obligation périodique distincte</strong> qui arrive à échéance : c'est l'occasion idéale d'y greffer une isolation (ITE) pour améliorer le DPE et débloquer les aides. C'est l'objet de la partie suivante.
+      </p>
+    </div>
   </section>
 
   <!-- ============ SECTION 2 : RAVALEMENT ============ -->
@@ -1614,8 +1756,58 @@
     <div class="section-head fade-up">
       <div class="section-num blue specular">2</div>
       <div class="section-meta">
-        <div class="section-eyebrow">Façades</div>
-        <h2 class="section-title">Ravalement : deux scénarios</h2>
+        <div class="section-eyebrow">Sujet n°2 · Façades</div>
+        <h2 class="section-title">Le ravalement</h2>
+      </div>
+    </div>
+
+    <div class="card blue-tinted fade-up specular">
+      <p class="card-body">
+        <strong>Projet distinct du DPE.</strong> Le ravalement concerne <strong>l'aspect et l'étanchéité des façades</strong> (obligation communale en Île-de-France, en principe tous les 10 ans). Il peut être couplé à une isolation (ITE) pour aussi améliorer l'énergie, mais c'est un chantier à part entière, voté séparément.
+      </p>
+    </div>
+
+    <div class="card fade-up specular" style="border-left:3px solid var(--green);">
+      <div class="card-eyebrow text-green">↪ Du diagnostic au chantier</div>
+      <div class="card-title">Comment le DPE prépare le ravalement</div>
+      <p class="card-body mt-12">
+        Le <strong>DPE collectif</strong> (obligatoire pour les copropriétés depuis 2024) et l'<strong>audit énergétique</strong> servent de socle au <strong>Plan Pluriannuel de Travaux (PPT)</strong>. C'est ce PPT qui planifie et chiffre les gros travaux des 10 prochaines années, dont le ravalement. En documentant la performance du bâti, le DPE est aussi la pièce qui permet de <strong>monter les dossiers d'aides</strong> (MaPrimeRénov' Copro, CEE) quand le ravalement intègre une ITE.
+      </p>
+    </div>
+
+    <div class="card orange-tinted fade-up specular">
+      <div class="card-eyebrow text-orange">⚖ Loi ALUR · le levier de financement</div>
+      <div class="card-title">Le fonds de travaux obligatoire</div>
+      <p class="card-body mt-12">
+        Depuis la <strong>loi ALUR</strong> (2014, en vigueur 2017), chaque copropriété alimente un <strong>fonds de travaux</strong> : une cotisation annuelle d'au moins <strong>5% du budget</strong> (ou 2,5% du montant du PPT). Cette épargne collective sert en priorité à financer les gros travaux comme le ravalement, et <strong>réduit d'autant l'appel de fonds</strong> au moment du chantier.
+      </p>
+      <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
+        ⓘ Le reste à charge est ensuite couvert par les aides (scénario ITE), le fonds de travaux déjà constitué, puis un prêt collectif si besoin. À vérifier : le solde actuel du fonds de travaux de la copropriété.
+      </p>
+    </div>
+
+    <div class="sub-head-row fade-up">
+      <span class="sub-head">Qui décide, qui paie ?</span>
+    </div>
+
+    <div class="scope-legend fade-up">
+      <div class="scope-legend-item collectif">
+        <div class="scope-legend-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>
+        </div>
+        <div>
+          <div class="scope-legend-title">Collectif</div>
+          <div class="scope-legend-desc">Le projet, le devis et les aides. Voté en AG, porté par le syndicat.</div>
+        </div>
+      </div>
+      <div class="scope-legend-item individuel">
+        <div class="scope-legend-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+        </div>
+        <div>
+          <div class="scope-legend-title">Individuel</div>
+          <div class="scope-legend-desc">Votre quote-part, selon vos tantièmes. Ce que vous payez vraiment.</div>
+        </div>
       </div>
     </div>
 
@@ -1627,7 +1819,13 @@
     </div>
 
     <div class="simulator fade-up" role="group" aria-label="Simulateur de quote-part de ravalement">
-      <div class="sim-eyebrow">▸ Simulateur copropriétaire</div>
+      <div class="sim-head-row">
+        <div class="sim-eyebrow">▸ Simulateur</div>
+        <span class="scope-badge individuel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+          Votre part
+        </span>
+      </div>
       <div class="sim-title">Ce que le ravalement pourrait vous coûter</div>
       <p class="card-body" style="font-size:13px;color:var(--muted);margin-bottom:18px;">
         Entrez la surface de <strong style="color:var(--body);">votre appartement</strong> pour estimer votre quote-part personnelle des travaux.
@@ -1726,6 +1924,14 @@
     </div>
 
     <!-- Détail des scénarios, piloté par les mêmes onglets -->
+    <div class="sub-head-row fade-up">
+      <span class="sub-head">Le projet complet, vue copropriété</span>
+      <span class="scope-badge collectif">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>
+        Collectif
+      </span>
+    </div>
+
     <div class="scenario-detail-panel active" id="detail-s1" role="tabpanel" aria-labelledby="tab-s1">
       <div class="scenario specular fade-up">
         <div class="scenario-eyebrow">Scénario 1</div>
@@ -1946,7 +2152,13 @@
       </div>
     </div>
 
-    <div class="sub-head mt-20">Aides mobilisables en 2026</div>
+    <div class="sub-head-row mt-20">
+      <span class="sub-head">Aides mobilisables en 2026</span>
+      <span class="scope-badge collectif">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>
+        Collectif
+      </span>
+    </div>
 
     <div class="stagger">
 
@@ -2000,15 +2212,42 @@
 
     </div>
 
-    <div class="sub-head mt-20">Solutions de financement (prêts)</div>
+    <div class="sub-head-row mt-20">
+      <span class="sub-head">Solutions de financement (prêts)</span>
+      <span class="scope-badge collectif">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>
+        Collectif
+      </span>
+    </div>
 
     <div class="card fade-up">
       <p class="card-body">
-        Au-delà des subventions, plusieurs <strong>prêts dédiés aux copropriétés</strong> permettent d'étaler le reste à charge sans avance de trésorerie. Le syndicat des copropriétaires emprunte, chaque copropriétaire adhère à hauteur de sa quote-part.
+        Le financement se construit par couches : d'abord le <strong>fonds de travaux</strong> déjà épargné, puis les <strong>aides</strong> (si ITE), et enfin un <strong>prêt collectif</strong> pour le solde. Le syndicat emprunte, chaque copropriétaire adhère à hauteur de sa quote-part.
       </p>
     </div>
 
     <div class="stagger">
+
+      <div class="loan specular">
+        <div class="loan-head">
+          <div class="loan-title-wrap">
+            <div class="loan-title">Fonds de travaux (loi ALUR)</div>
+            <div class="loan-sub">Épargne déjà constituée par la copropriété</div>
+          </div>
+          <div class="loan-rate">
+            <div class="loan-rate-value" style="color:var(--green-2);">1ère</div>
+            <div class="loan-rate-label">réserve</div>
+          </div>
+        </div>
+        <div class="loan-specs">
+          <span class="loan-spec">Cotisation <strong>≥ 5% du budget</strong></span>
+          <span class="loan-spec">Obligatoire depuis 2017</span>
+          <span class="loan-spec">Aucun intérêt</span>
+        </div>
+        <p class="card-body" style="font-size:13px;margin-top:12px;color:var(--muted);">
+          Réserve alimentée chaque année par tous les copropriétaires (selon les tantièmes). Mobilisable en priorité sur vote en AG, elle <strong style="color:var(--body);">réduit directement le reste à financer</strong>. Premier réflexe : vérifier le solde disponible.
+        </p>
+      </div>
 
       <div class="loan specular">
         <div class="loan-head">
@@ -2087,6 +2326,26 @@
       <p class="card-body mt-12">
         Sur un immeuble de 4 560 m² (source Hellio) : ravalement seul devisé à <strong>407 000 €</strong>, contre <strong>617 000 €</strong> en y ajoutant une ITE. Mais le couplage a débloqué environ <strong>91 000 € d'aides</strong>, et grâce aux économies d'énergie, le retour sur investissement n'a été que de <strong>6 ans</strong>.
       </p>
+    </div>
+
+    <div class="sub-head-row mt-20">
+      <span class="sub-head">De votre côté, en tant que copropriétaire</span>
+      <span class="scope-badge individuel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+        Individuel
+      </span>
+    </div>
+
+    <div class="card fade-up specular" style="border-left:3px solid var(--purple);">
+      <div class="card-body">
+        Une fois le projet voté, voici ce qui relève de <strong>vous seul</strong> :
+        <ul class="bullets blue mt-12">
+          <li><strong>Votre quote-part</strong> : à régler comptant, ou en adhérant au prêt collectif à hauteur de vos tantièmes</li>
+          <li><strong>Éco-PTZ individuel complémentaire</strong> : en plus du prêt collectif, vous pouvez en demander un pour des travaux dans votre propre logement (fenêtres, chauffage)</li>
+          <li><strong>MaPrimeRénov' individuelle</strong> : possible pour vos travaux privatifs, distincte de l'aide Copropriété</li>
+          <li>Si vous êtes <strong>bailleur</strong>, le ravalement n'est pas récupérable sur le locataire (c'est une charge de propriétaire)</li>
+        </ul>
+      </div>
     </div>
 
   </section>
