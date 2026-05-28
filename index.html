@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="color-scheme" content="light" />
+<meta name="description" content="Synthèse DPE et estimation ravalement de façade pour la résidence Les Terrasses de l'Europe à Massy. Diagnostic énergétique, comparaison de scénarios chiffrés et aides mobilisables en 2026." />
+<meta property="og:title" content="Les Terrasses de l'Europe — DPE & Ravalement" />
+<meta property="og:description" content="Synthèse DPE et estimation ravalement de façade — 92 logements, Massy." />
+<meta property="og:type" content="website" />
+<title>Les Terrasses de l'Europe — DPE & Ravalement</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root {
+    color-scheme: light only;
+    /* Type */
+    --font-display: 'DM Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+    /* Colors - Light */
+    --ink: #0A0A0C;
+    --ink-2: #1C1C1E;
+    --body: #2C2C2E;
+    --muted: #6E6E73;
+    --muted-2: #8E8E93;
+    --line: rgba(0, 0, 0, 0.10);
+    --line-strong: rgba(0, 0, 0, 0.14);
+
+    /* Surfaces */
+    --bg-base: #FFFFFF;
+    --surface: rgba(247, 247, 250, 0.85);
+    --surface-solid: #FFFFFF;
+    --surface-elevated: rgba(255, 255, 255, 0.88);
+    --card-bg: #F7F7FA;
+
+    /* Accents - SF-inspired, ajustés pour WCAG AA */
+    --green: #34C759;          /* graphique uniquement (badges, ronds, lignes) */
+    --green-2: #1A7F37;        /* texte sur fond clair — AA 4.5:1 sur blanc */
+    --green-soft: rgba(52, 199, 89, 0.14);
+    --blue: #007AFF;            /* graphique */
+    --blue-2: #0040DD;          /* texte sur fond clair — AA */
+    --blue-soft: rgba(0, 122, 255, 0.12);
+    --orange: #FF9500;          /* graphique */
+    --orange-2: #B25700;        /* texte sur fond clair — AA */
+    --orange-soft: rgba(255, 149, 0, 0.16);
+    --red: #D70015;             /* AA texte */
+    --red-soft: rgba(215, 0, 21, 0.10);
+    --purple: #AF52DE;
+    --teal: #5AC8FA;
+
+    /* Shadows - layered */
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    --shadow-hero: 0 4px 16px rgba(0,0,0,0.05), 0 20px 60px rgba(0,0,0,0.08);
+    --shadow-pop: 0 12px 40px rgba(0,0,0,0.12);
+
+    /* Radius */
+    --r-sm: 12px;
+    --r-md: 18px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+
+    /* Spacing */
+    --gap: 16px;
+    --gap-lg: 24px;
+
+    /* Safe areas */
+    --sat: env(safe-area-inset-top, 0);
+    --sab: env(safe-area-inset-bottom, 0);
+  }
+
+  /* ============ RESET ============ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background: #FFFFFF;
+    background-color: #FFFFFF;
+  }
+  body {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--body);
+    background: #FFFFFF;
+    background-color: #FFFFFF;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* ============ SKIP LINK ============ */
+  .skip-link {
+    position: absolute;
+    top: -200px;
+    left: 12px;
+    z-index: 999;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--surface-solid);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-pop);
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus {
+    top: calc(var(--sat) + 12px);
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  /* ============ REDUCED MOTION ============ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .fade-up, .stagger > * {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .hero-eyebrow::before { animation: none !important; }
+  }
+
+  /* ============ MESH BACKGROUND ============ */
+  .mesh {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+  .mesh::before, .mesh::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.28;
+  }
+  .mesh::before {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, var(--green) 0%, transparent 70%);
+    top: -100px; left: -100px;
+  }
+  .mesh::after {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, var(--blue) 0%, transparent 70%);
+    top: 30%; right: -150px;
+  }
+  .mesh-3 {
+    position: absolute;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+    filter: blur(90px);
+    opacity: 0.20;
+    bottom: 10%; left: -120px;
+  }
+
+  /* ============ NAV BAR ============ */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: calc(var(--sat) + 12px) max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
+    background: var(--surface-elevated);
+    backdrop-filter: saturate(180%) blur(30px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    border-bottom: 1px solid var(--line);
+    transition: all 0.3s ease;
+  }
+  .navbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .navbar-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .navbar-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1px;
+  }
+
+  /* Pills navigation */
+  .pills {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .pills::-webkit-scrollbar { display: none; }
+  .pill {
+    flex-shrink: 0;
+    padding: 11px 16px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    scroll-snap-align: start;
+  }
+  .pill[aria-current="location"], .pill.active {
+    color: var(--ink);
+    background: var(--surface-solid);
+    border-color: transparent;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .pill:active { transform: scale(0.96); }
+
+  /* ============ MAIN CONTAINER ============ */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px max(20px, env(safe-area-inset-right)) calc(var(--sab) + 80px) max(20px, env(safe-area-inset-left));
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    margin-bottom: 32px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .hero-title {
+    font-size: clamp(34px, 9vw, 44px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============ KPI GRID ============ */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    background: var(--surface);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 14px 12px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  }
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .kpi-value {
+    font-size: clamp(22px, 7vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+  .kpi-value.green { color: var(--green-2); }
+  .kpi-value.blue { color: var(--blue-2); }
+  .kpi-detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.2;
+  }
+
+  /* ============ SECTION HEADER ============ */
+  .section {
+    margin-bottom: 36px;
+    scroll-margin-top: 120px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 4px 12px var(--shadow-color, rgba(0,0,0,0.15));
+    position: relative;
+    overflow: hidden;
+  }
+  .section-num::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent 50%);
+  }
+  .section-num.green { background: linear-gradient(135deg, var(--green), var(--green-2)); --shadow-color: rgba(52, 199, 89, 0.4); }
+  .section-num.blue { background: linear-gradient(135deg, var(--blue), var(--blue-2)); --shadow-color: rgba(0, 122, 255, 0.4); }
+  .section-num.orange { background: linear-gradient(135deg, var(--orange), var(--orange-2)); --shadow-color: rgba(255, 149, 0, 0.4); }
+  .section-meta {
+    flex: 1;
+    padding-top: 2px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  /* ============ CARDS ============ */
+  .card {
+    background: var(--surface);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 12px; right: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  }
+  .card-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .card-body {
+    font-size: 14px;
+    color: var(--body);
+    line-height: 1.5;
+  }
+  .card-body strong { color: var(--ink); font-weight: 700; }
+
+  /* Highlight card variants */
+  .card.green-tinted {
+    background: linear-gradient(135deg, var(--green-soft), var(--surface));
+    border-color: rgba(52, 199, 89, 0.18);
+  }
+  .card.blue-tinted {
+    background: linear-gradient(135deg, var(--blue-soft), var(--surface));
+    border-color: rgba(0, 122, 255, 0.18);
+  }
+  .card.orange-tinted {
+    background: linear-gradient(135deg, var(--orange-soft), var(--surface));
+    border-color: rgba(255, 149, 0, 0.18);
+  }
+  .card.red-tinted {
+    background: linear-gradient(135deg, var(--red-soft), var(--surface));
+    border-color: rgba(255, 59, 48, 0.18);
+  }
+
+  /* ============ TWO-COL GRID ============ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ============ ROW LISTS (key-value) ============ */
+  .row-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .row-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+    letter-spacing: -0.01em;
+  }
+  .row-value.green { color: var(--green-2); }
+  .row-value.blue { color: var(--blue-2); }
+  .row-value.red { color: var(--red); }
+
+  /* ============ STAT BIG ============ */
+  .stat-big {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 8px 0 12px;
+  }
+  .stat-big-value {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-big-unit {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* ============ BULLET LIST ============ */
+  .bullets {
+    list-style: none;
+    margin: 4px 0;
+  }
+  .bullets li {
+    position: relative;
+    padding-left: 22px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    color: var(--body);
+    line-height: 1.4;
+  }
+  .bullets li::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 13px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .bullets.green li::before { background: var(--green); }
+  .bullets.red li::before { background: var(--red); }
+  .bullets.orange li::before { background: var(--orange); }
+  .bullets.blue li::before { background: var(--blue); }
+
+  /* ============ PROS/CONS PILLS ============ */
+  .pros-cons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 480px) {
+    .pros-cons-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .pc-card {
+    background: var(--surface);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 16px;
+  }
+  .pc-card.pros {
+    background: linear-gradient(135deg, var(--green-soft), var(--surface));
+    border-color: rgba(52, 199, 89, 0.2);
+  }
+  .pc-card.cons {
+    background: linear-gradient(135deg, var(--red-soft), var(--surface));
+    border-color: rgba(255, 59, 48, 0.2);
+  }
+  .pc-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .pc-head.green { color: var(--green-2); }
+  .pc-head.red { color: var(--red); }
+  .pc-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: white;
+  }
+  .pc-icon.green { background: var(--green); }
+  .pc-icon.red { background: var(--red); }
+  .pc-card .bullets li {
+    font-size: 13px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .pc-card .bullets li::before { top: 11px; }
+
+  /* ============ SCENARIO CARDS ============ */
+  .scenarios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .scenario {
+    background: var(--surface);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .scenario.recommended {
+    background: linear-gradient(140deg, var(--blue-soft), var(--surface));
+    border: 1px solid rgba(0, 122, 255, 0.25);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 32px rgba(0, 122, 255, 0.12);
+  }
+  .scenario-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .scenario-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .scenario-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .scenario-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 14px;
+    background: rgba(0,0,0,0.02);
+    border-radius: var(--r-md);
+  }
+  .scenario-stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .scenario-stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .scenario-stat-value.green { color: var(--green-2); }
+  .scenario-stat-value.red { color: var(--red); }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    margin-top: 8px;
+  }
+  .timeline-step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .timeline-step:last-child { border-bottom: none; }
+  .timeline-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--orange-soft);
+    color: var(--orange-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .timeline-body { flex: 1; min-width: 0; }
+  .timeline-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    margin-bottom: 4px;
+  }
+  .timeline-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .timeline-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+  }
+  .timeline-meta-item strong { color: var(--ink-2); font-weight: 600; }
+  .timeline-meta-sep { color: var(--muted-2); }
+
+  /* ============ AIDE CARDS ============ */
+  .aide {
+    background: var(--surface);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .aide-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .aide-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 12px var(--orange);
+    flex-shrink: 0;
+  }
+  .aide-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .aide-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .aide-row {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .aide-row strong {
+    color: var(--ink);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .aide-row span { color: var(--body); }
+  .aide-row.highlight strong, .aide-row.highlight span { color: var(--green-2); font-weight: 600; }
+  .aide-row.warn strong, .aide-row.warn span { color: var(--orange-2); font-weight: 500; font-style: italic; font-size: 12px; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .footer-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  /* ============ ANIMATIONS ============ */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger children */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stagger.visible > *:nth-child(1) { transition-delay: 0.0s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+
+  /* ============ UTILITIES ============ */
+  .text-muted { color: var(--muted); }
+  .text-ink { color: var(--ink); }
+  .text-green { color: var(--green-2); }
+  .text-blue { color: var(--blue-2); }
+  .text-orange { color: var(--orange-2); }
+  .text-red { color: var(--red); }
+  .fw-700 { font-weight: 700; }
+  .fw-600 { font-weight: 600; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-20 { margin-top: 20px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+
+  /* Mini label tag */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .tag.green { background: var(--green-soft); color: var(--green-2); }
+  .tag.blue { background: var(--blue-soft); color: var(--blue-2); }
+  .tag.red { background: var(--red-soft); color: var(--red); }
+  .tag.orange { background: var(--orange-soft); color: var(--orange-2); }
+  .tag.gray { background: rgba(0,0,0,0.06); color: var(--muted); }
+
+  /* Section accent line */
+  .accent-line {
+    width: 32px; height: 3px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .accent-line.green { background: var(--green); }
+  .accent-line.blue { background: var(--blue); }
+  .accent-line.orange { background: var(--orange); }
+
+  /* Sub-section header */
+  .sub-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 8px 0 12px;
+  }
+
+  /* Specific iOS 26 vibe: continuous corners + specular highlight */
+  .specular {
+    position: relative;
+    isolation: isolate;
+  }
+  .specular::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* No-tap-highlight on iOS */
+  * { -webkit-tap-highlight-color: transparent; }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Aller au contenu</a>
+
+<div class="mesh" aria-hidden="true">
+  <div class="mesh-3"></div>
+</div>
+
+<nav class="navbar" id="navbar" aria-label="Navigation principale">
+  <div class="navbar-row">
+    <div style="min-width:0;flex:1;">
+      <div class="navbar-eyebrow">Synthèse</div>
+      <div class="navbar-title" id="navTitle">Les Terrasses de l'Europe</div>
+    </div>
+  </div>
+  <div class="pills" id="pills" role="navigation" aria-label="Navigation par section">
+    <button class="pill active" data-target="hero" type="button" aria-current="location" aria-controls="hero">Vue d'ensemble</button>
+    <button class="pill" data-target="dpe" type="button" aria-controls="dpe">DPE</button>
+    <button class="pill" data-target="ravalement" type="button" aria-controls="ravalement">Ravalement</button>
+    <button class="pill" data-target="etapes" type="button" aria-controls="etapes">Étapes &amp; aides</button>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero fade-up" id="hero">
+    <div class="hero-eyebrow">DPE valide jusqu'en 2036</div>
+    <h1 class="hero-title">Les Terrasses<br>de l'Europe</h1>
+    <p class="hero-subtitle">15 place de l'Union Européenne, Massy · 92 logements · 2 bâtiments construits en 2006</p>
+  </section>
+
+  <div class="kpi-grid stagger">
+    <div class="kpi specular">
+      <div class="kpi-label">Énergie</div>
+      <div class="kpi-value green">C</div>
+      <div class="kpi-detail">124-142 kWh/m²·an</div>
+    </div>
+    <div class="kpi specular">
+      <div class="kpi-label">Climat</div>
+      <div class="kpi-value green">A</div>
+      <div class="kpi-detail">4-5 kgCO₂/m²·an</div>
+    </div>
+    <div class="kpi specular">
+      <div class="kpi-label">Coût / an</div>
+      <div class="kpi-value blue">95 k€</div>
+      <div class="kpi-detail">~ pour 92 logts</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1 — DPE ============ -->
+  <section class="section" id="dpe">
+    <div class="section-head fade-up">
+      <div class="section-num green specular">1</div>
+      <div class="section-meta">
+        <div class="section-eyebrow">Diagnostic énergétique</div>
+        <h2 class="section-title">Ce que disent les DPE</h2>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <p class="card-body">
+        Deux bâtiments construits en <strong>2006</strong>, 92 logements sur <strong>5 734 m²</strong>.
+        <strong>Bons élèves climatiques</strong> grâce au tout-électrique, mais les postes de chauffage et d'eau chaude restent lourds.
+      </p>
+    </div>
+
+    <div class="pros-cons-grid fade-up">
+      <div class="pc-card pros specular">
+        <div class="pc-head green">
+          <span class="pc-icon green">✓</span>
+          Points forts
+        </div>
+        <ul class="bullets green">
+          <li>Étiquettes C/A — pas de risque passoire</li>
+          <li>Murs isolés (ITI) + toiture (ITE)</li>
+          <li>Fenêtres PVC double vitrage VIR</li>
+          <li>VMC hygroréglable</li>
+          <li>PAC partielle sur A/B (2021)</li>
+        </ul>
+      </div>
+      <div class="pc-card cons specular">
+        <div class="pc-head red">
+          <span class="pc-icon red">✗</span>
+          Points faibles
+        </div>
+        <ul class="bullets red">
+          <li>Chauffage par convecteurs électriques</li>
+          <li>ECS électrique — 47% des coûts</li>
+          <li>Déperditions ventilation 41-44%</li>
+          <li>Ponts thermiques 18-23%</li>
+          <li>Aucun renouvelable sur bât. C</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-head mt-20">Comparatif des bâtiments</div>
+
+    <div class="card fade-up">
+      <div class="row-list">
+        <div class="row">
+          <span class="row-label">Surface</span>
+          <span class="row-value">4 438 / 1 296 m²</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Logements</span>
+          <span class="row-value">68 / 24</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Étiquette énergie</span>
+          <span class="row-value green">C / C</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Émissions CO₂</span>
+          <span class="row-value">20 598 / 6 903 kg/an</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Coût énergie</span>
+          <span class="row-value">56-76 / 19-26 k€/an</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Climatisation</span>
+          <span class="row-value">Oui / Non</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-head mt-20">D'où vient la facture</div>
+
+    <div class="card fade-up">
+      <div class="row-list">
+        <div class="row">
+          <span class="row-label">Eau chaude sanitaire</span>
+          <span class="row-value"><span class="tag green">47%</span></span>
+        </div>
+        <div class="row">
+          <span class="row-label">Chauffage</span>
+          <span class="row-value"><span class="tag green">41%</span></span>
+        </div>
+        <div class="row">
+          <span class="row-label">Auxiliaires VMC</span>
+          <span class="row-value"><span class="tag gray">9%</span></span>
+        </div>
+        <div class="row">
+          <span class="row-label">Éclairage</span>
+          <span class="row-value"><span class="tag gray">3%</span></span>
+        </div>
+        <div class="row">
+          <span class="row-label">Climatisation</span>
+          <span class="row-value"><span class="tag gray">&lt;1%</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-head mt-20">Travaux recommandés par les DPE</div>
+
+    <div class="card green-tinted fade-up specular">
+      <div class="card-eyebrow text-green">◆ Pack 1 · Court terme</div>
+      <div class="card-title">Travaux essentiels</div>
+      <ul class="bullets green mt-12">
+        <li>Isolation toiture-terrasse par l'extérieur (R ≥ 6,5)</li>
+        <li>Remplacement des convecteurs par panneaux rayonnants</li>
+      </ul>
+      <div class="row-list mt-12">
+        <div class="row">
+          <span class="row-label">Bâtiment A/B</span>
+          <span class="row-value">345 500 - 467 400 €</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Bâtiment C</span>
+          <span class="row-value">74 100 - 100 400 €</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card green-tinted fade-up specular">
+      <div class="card-eyebrow text-green">◆◆ Pack 2 · Pour atteindre B</div>
+      <div class="card-title">Travaux à envisager</div>
+      <ul class="bullets green mt-12">
+        <li>Remplacement des émetteurs par PAC air/air</li>
+        <li>Installation de panneaux photovoltaïques</li>
+      </ul>
+      <div class="row-list mt-12">
+        <div class="row">
+          <span class="row-label">Bâtiment A/B</span>
+          <span class="row-value">502 700 - 680 300 €</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Bâtiment C</span>
+          <span class="row-value">181 000 - 244 900 €</span>
+        </div>
+      </div>
+      <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
+        ⓘ L'isolation seule ne suffit pas pour atteindre B — le changement de chauffage est indispensable.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 — RAVALEMENT ============ -->
+  <section class="section" id="ravalement">
+    <div class="section-head fade-up">
+      <div class="section-num blue specular">2</div>
+      <div class="section-meta">
+        <div class="section-eyebrow">Façades</div>
+        <h2 class="section-title">Ravalement — deux scénarios</h2>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <p class="card-body">
+        Surface estimée : <strong>~1 400-1 500 m²</strong> de façade opaque.
+        État actuel <em>bon, quelques fissures mineures.</em>
+      </p>
+    </div>
+
+    <div class="scenarios fade-up">
+
+      <div class="scenario specular">
+        <div class="scenario-eyebrow">Scénario 1</div>
+        <h3 class="scenario-title">Ravalement seul</h3>
+
+        <div class="scenario-stats">
+          <div>
+            <div class="scenario-stat-label">Coût total</div>
+            <div class="scenario-stat-value">85 - 165 k€</div>
+          </div>
+          <div>
+            <div class="scenario-stat-label">Reste à charge</div>
+            <div class="scenario-stat-value red">100%</div>
+          </div>
+        </div>
+
+        <div class="row-list">
+          <div class="row">
+            <span class="row-label">Tarif au m²</span>
+            <span class="row-value">60 - 110 €</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Aides</span>
+            <span class="row-value"><span class="tag red">Aucune</span></span>
+          </div>
+          <div class="row">
+            <span class="row-label">Impact DPE</span>
+            <span class="row-value"><span class="tag gray">Aucun</span></span>
+          </div>
+          <div class="row">
+            <span class="row-label">Durée chantier</span>
+            <span class="row-value">6-12 semaines</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario recommended specular">
+        <div class="scenario-badge">★ Recommandé</div>
+        <div class="scenario-eyebrow">Scénario 2</div>
+        <h3 class="scenario-title">Ravalement + ITE</h3>
+
+        <div class="scenario-stats">
+          <div>
+            <div class="scenario-stat-label">Coût total</div>
+            <div class="scenario-stat-value">250 - 420 k€</div>
+          </div>
+          <div>
+            <div class="scenario-stat-label">Reste après aides</div>
+            <div class="scenario-stat-value green">130 - 250 k€</div>
+          </div>
+        </div>
+
+        <div class="row-list">
+          <div class="row">
+            <span class="row-label">Tarif au m²</span>
+            <span class="row-value">180 - 280 €</span>
+          </div>
+          <div class="row">
+            <span class="row-label">MaPrimeRénov' Copro</span>
+            <span class="row-value green">✓ jusqu'à 45%</span>
+          </div>
+          <div class="row">
+            <span class="row-label">CEE + éco-PTZ</span>
+            <span class="row-value green">✓ cumulables</span>
+          </div>
+          <div class="row">
+            <span class="row-label">TVA</span>
+            <span class="row-value green">5,5 %</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Impact DPE</span>
+            <span class="row-value green">Significatif</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Durée chantier</span>
+            <span class="row-value">3-6 mois</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card orange-tinted fade-up specular mt-16">
+      <div class="card-eyebrow text-orange">⚠ Coûts en sus</div>
+      <div class="card-title">À prévoir dans les deux scénarios</div>
+      <ul class="bullets orange mt-12">
+        <li>Honoraires d'architecte (obligatoires en copropriété)</li>
+        <li>Assurance dommages-ouvrage</li>
+        <li>Échafaudage si compté séparément (≈ 30 €/m²)</li>
+        <li>AMO — partiellement financée par l'Anah pour le scénario 2</li>
+      </ul>
+    </div>
+
+    <div class="card blue-tinted fade-up specular">
+      <div class="card-eyebrow text-blue">★ Pourquoi le scénario 2</div>
+      <div class="card-title">L'opportunité économique de l'ITE</div>
+      <p class="card-body mt-12">
+        L'échafaudage représente une part importante du coût total. Si la façade doit être ravalée de toute façon,
+        c'est le <strong>moment économiquement le plus pertinent</strong> pour ajouter une ITE : l'échafaudage est déjà installé,
+        et le surcoût ITE est en grande partie couvert par les aides énergétiques.
+      </p>
+      <p class="card-body mt-12" style="font-size:13px;color:var(--muted);font-style:italic;">
+        Bénéfice secondaire : valorisation patrimoniale, réduction des charges et amélioration du DPE — un argument fort à la revente ou location.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 — ÉTAPES ============ -->
+  <section class="section" id="etapes">
+    <div class="section-head fade-up">
+      <div class="section-num orange specular">3</div>
+      <div class="section-meta">
+        <div class="section-eyebrow">Mode opératoire</div>
+        <h2 class="section-title">Étapes &amp; aides</h2>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <p class="card-body">
+        Délai global : <strong class="text-orange">12-18 mois</strong> pour un ravalement simple ·
+        <strong class="text-orange">18-30 mois</strong> avec ITE et aides.
+      </p>
+    </div>
+
+    <div class="sub-head mt-20">Parcours détaillé</div>
+
+    <div class="card fade-up">
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="timeline-num">1</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Contacter France Rénov'</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>1-2 sem.</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Conseil syndical</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">2</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Audit énergétique préalable</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>1-2 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Bureau d'études</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">3</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Diagnostic technique + programme</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>1-2 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Architecte / AMO</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">4</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Appel d'offres — 3 devis min. RGE</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>2-3 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Architecte / AMO</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">5</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Vote en Assemblée Générale</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>AG annuelle</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Copropriétaires</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">6</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Dépôt des aides <em>avant</em> travaux</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>3-6 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Syndic / AMO</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">7</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Réalisation des travaux</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>6 sem. à 6 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Entreprise RGE</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-num">8</div>
+          <div class="timeline-body">
+            <div class="timeline-title">Réception &amp; versement des aides</div>
+            <div class="timeline-meta">
+              <span class="timeline-meta-item"><strong>1-3 mois</strong></span>
+              <span class="timeline-meta-sep">·</span>
+              <span class="timeline-meta-item">Architecte + syndic</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-head mt-20">Aides mobilisables en 2026</div>
+
+    <div class="stagger">
+
+      <div class="aide specular">
+        <div class="aide-head">
+          <div class="aide-dot"></div>
+          <div class="aide-title">MaPrimeRénov' Copropriété</div>
+        </div>
+        <div class="aide-rows">
+          <div class="aide-row"><strong>Montant</strong><span>30-45% des travaux, plafond 25 000 €/logement</span></div>
+          <div class="aide-row"><strong>Condition</strong><span>Gain énergétique ≥ 35%, AMO obligatoire</span></div>
+          <div class="aide-row highlight"><strong>Potentiel</strong><span>jusqu'à ~2,3 M€ pour 92 logements</span></div>
+        </div>
+      </div>
+
+      <div class="aide specular">
+        <div class="aide-head">
+          <div class="aide-dot"></div>
+          <div class="aide-title">Certificats d'Économies d'Énergie (CEE)</div>
+        </div>
+        <div class="aide-rows">
+          <div class="aide-row"><strong>Montant</strong><span>20-40% des aides totales typiquement</span></div>
+          <div class="aide-row"><strong>Condition</strong><span>Entreprise RGE, demande avant signature</span></div>
+          <div class="aide-row highlight"><strong>Cumul</strong><span>avec MaPrimeRénov' Copro, éco-PTZ, TVA 5,5%</span></div>
+        </div>
+      </div>
+
+      <div class="aide specular">
+        <div class="aide-head">
+          <div class="aide-dot"></div>
+          <div class="aide-title">Éco-PTZ collectif</div>
+        </div>
+        <div class="aide-rows">
+          <div class="aide-row"><strong>Montant</strong><span>Jusqu'à 50 000 € (ou 30 000 €/lot), 0% sur 20 ans</span></div>
+          <div class="aide-row"><strong>Acteur</strong><span>Syndicat de copropriété, après vote en AG</span></div>
+          <div class="aide-row highlight"><strong>Validité</strong><span>prorogé jusqu'au 31 décembre 2027</span></div>
+        </div>
+      </div>
+
+      <div class="aide specular">
+        <div class="aide-head">
+          <div class="aide-dot"></div>
+          <div class="aide-title">Aides locales</div>
+        </div>
+        <div class="aide-rows">
+          <div class="aide-row"><strong>IDF</strong><span>CDSR pour copropriétés en difficulté</span></div>
+          <div class="aide-row"><strong>CoachCopro®</strong><span>accompagnement gratuit (APC)</span></div>
+          <div class="aide-row warn"><strong>⚠</strong><span>Prime Éco-logis 91 supprimée en 2026 — vérifier auprès de la mairie de Massy</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+    <p class="footer-text">
+      Sources : DPE 20/05/2026 (ENERA Conseil) · France Rénov' · Anah · economie.gouv.fr · service-public.fr<br>
+      Tarifs ravalement : renovationettravaux.fr, expert-ravalement.fr, travaux-maconnerie.fr (2026).<br>
+      <span style="display:inline-block;margin-top:8px;opacity:0.7;">Estimations indicatives — à confirmer par devis professionnels.</span>
+    </p>
+  </footer>
+
+</main>
+
+<script>
+  // ============ FADE-UP ON SCROLL ============
+  const supportsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fadeElements = document.querySelectorAll('.fade-up, .stagger');
+
+  if (supportsReducedMotion) {
+    fadeElements.forEach(el => el.classList.add('visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    fadeElements.forEach(el => observer.observe(el));
+  }
+
+  // ============ PILLS NAVIGATION ============
+  const pills = document.querySelectorAll('.pill');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const target = pill.dataset.target;
+      const el = document.getElementById(target);
+      if (el) {
+        const navHeight = document.getElementById('navbar').offsetHeight;
+        const y = el.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({
+          top: y,
+          behavior: supportsReducedMotion ? 'auto' : 'smooth'
+        });
+        // Focus le titre de la section pour les lecteurs d'écran
+        const heading = el.querySelector('h1, h2, h3') || el;
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({ preventScroll: true });
+      }
+    });
+  });
+
+  // ============ ACTIVE PILL ON SCROLL ============
+  const sections = ['hero', 'dpe', 'ravalement', 'etapes'].map(id => document.getElementById(id));
+  const navTitle = document.getElementById('navTitle');
+  const sectionTitles = {
+    hero: "Les Terrasses de l\u2019Europe",
+    dpe: 'DPE — Diagnostic',
+    ravalement: 'Ravalement de façade',
+    etapes: 'Étapes & aides'
+  };
+
+  let activeId = 'hero';
+  const updateActive = () => {
+    const scrollY = window.scrollY;
+    const navHeight = document.getElementById('navbar').offsetHeight;
+    let current = 'hero';
+
+    sections.forEach(sec => {
+      if (sec && sec.offsetTop - navHeight - 60 <= scrollY) {
+        current = sec.id;
+      }
+    });
+
+    if (current !== activeId) {
+      activeId = current;
+      pills.forEach(p => {
+        const isActive = p.dataset.target === current;
+        p.classList.toggle('active', isActive);
+        if (isActive) {
+          p.setAttribute('aria-current', 'location');
+        } else {
+          p.removeAttribute('aria-current');
+        }
+      });
+      navTitle.textContent = sectionTitles[current];
+
+      const activePill = document.querySelector('.pill.active');
+      if (activePill) {
+        activePill.scrollIntoView({
+          behavior: supportsReducedMotion ? 'auto' : 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+  };
+
+  let scrollTimer;
+  window.addEventListener('scroll', () => {
+    if (scrollTimer) cancelAnimationFrame(scrollTimer);
+    scrollTimer = requestAnimationFrame(updateActive);
+  }, { passive: true });
+
+  // ============ HAPTIC-LIKE FEEDBACK (touch only) ============
+  if (!supportsReducedMotion) {
+    document.querySelectorAll('.pill, .kpi, .card, .scenario, .aide').forEach(el => {
+      el.addEventListener('touchstart', () => {
+        el.style.transition = 'transform 0.15s ease';
+        el.style.transform = 'scale(0.98)';
+      }, { passive: true });
+      el.addEventListener('touchend', () => {
+        el.style.transform = '';
+        setTimeout(() => { el.style.transition = ''; }, 200);
+      }, { passive: true });
+      el.addEventListener('touchcancel', () => {
+        el.style.transform = '';
+      }, { passive: true });
+    });
+  }
+</script>
+
+</body>
+</html>
