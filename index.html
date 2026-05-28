@@ -1493,6 +1493,53 @@
   .scope-mini.collectif { background: rgba(0,122,255,0.12); color: var(--blue-2); }
   .scope-mini.individuel { background: rgba(175,82,222,0.14); color: #8829B8; }
 
+  /* ============ GLOSSAIRE ============ */
+  .glossary {
+    margin-top: 12px;
+    border-radius: var(--r-md);
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .glossary summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 44px;
+  }
+  .glossary summary::-webkit-details-marker { display: none; }
+  .glossary summary::after {
+    content: '+';
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--muted);
+    transition: transform 0.25s ease;
+  }
+  .glossary[open] summary::after { transform: rotate(45deg); }
+  .glossary-body {
+    padding: 0 16px 14px;
+  }
+  .glossary-item {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .glossary-term {
+    font-weight: 700;
+    color: var(--blue-2);
+  }
+  .glossary-def {
+    color: var(--body);
+  }
+
   /* Specific iOS 26 vibe: continuous corners + specular highlight */
   .specular {
     position: relative;
@@ -1585,7 +1632,7 @@
 
     <div class="card fade-up">
       <p class="card-body">
-        Ce diagnostic porte sur <strong>l'ensemble de l'immeuble</strong> (parties communes et performance globale), pas sur votre logement en particulier. Deux bâtiments construits en <strong>2006</strong>, 92 logements sur <strong>5 734 m²</strong>.
+        Le DPE (diagnostic de performance énergétique) porte sur <strong>l'ensemble de l'immeuble</strong> (parties communes et performance globale), pas sur votre logement en particulier. Deux bâtiments construits en <strong>2006</strong>, 92 logements sur <strong>5 734 m²</strong>.
         <strong>Bons élèves climatiques</strong> grâce au tout-électrique, mais les postes de chauffage et d'eau chaude restent lourds.
       </p>
     </div>
@@ -1598,10 +1645,10 @@
         </div>
         <ul class="bullets green">
           <li>Étiquettes C/A, pas de risque passoire</li>
-          <li>Murs isolés (ITI) + toiture (ITE)</li>
-          <li>Fenêtres PVC double vitrage VIR</li>
-          <li>VMC hygroréglable</li>
-          <li>PAC partielle sur A/B (2021)</li>
+          <li>Murs et toiture déjà isolés</li>
+          <li>Fenêtres double vitrage performant</li>
+          <li>Ventilation à débit réglable (VMC)</li>
+          <li>Pompe à chaleur partielle sur A/B (2021)</li>
         </ul>
       </div>
       <div class="pc-card cons specular">
@@ -1610,11 +1657,11 @@
           Points faibles
         </div>
         <ul class="bullets red">
-          <li>Chauffage par convecteurs électriques</li>
-          <li>ECS électrique : 47% des coûts</li>
-          <li>Déperditions ventilation 41-44%</li>
-          <li>Ponts thermiques 18-23%</li>
-          <li>Aucun renouvelable sur bât. C</li>
+          <li>Chauffage par vieux radiateurs électriques</li>
+          <li>Eau chaude électrique : 47% des coûts</li>
+          <li>Pertes par la ventilation : 41-44%</li>
+          <li>Ponts thermiques (fuites de chaleur) 18-23%</li>
+          <li>Aucune énergie renouvelable sur bât. C</li>
         </ul>
       </div>
     </div>
@@ -1683,8 +1730,8 @@
       <div class="card-eyebrow text-green">◆ Pack 1 · Court terme</div>
       <div class="card-title">Travaux essentiels</div>
       <ul class="bullets green mt-12">
-        <li>Isolation toiture-terrasse par l'extérieur (R ≥ 6,5)<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
-        <li>Remplacement des convecteurs par panneaux rayonnants<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
+        <li>Isolation renforcée de la toiture-terrasse, par l'extérieur<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
+        <li>Remplacement des vieux radiateurs par des modèles performants<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
       </ul>
       <div class="row-list mt-12">
         <div class="row">
@@ -1697,7 +1744,7 @@
         </div>
       </div>
       <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
-        ⓘ L'isolation toiture est une partie commune (votée en AG). Les convecteurs sont dans votre logement : leur remplacement est à votre charge, à votre rythme.
+        ⓘ L'isolation toiture est une partie commune (votée en AG). Les radiateurs sont dans votre logement : leur remplacement est à votre charge, à votre rythme.
       </p>
     </div>
 
@@ -1705,8 +1752,8 @@
       <div class="card-eyebrow text-green">◆◆ Pack 2 · Pour atteindre B</div>
       <div class="card-title">Travaux à envisager</div>
       <ul class="bullets green mt-12">
-        <li>Remplacement des émetteurs par PAC air/air<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
-        <li>Installation de panneaux photovoltaïques<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
+        <li>Pompe à chaleur air/air pour le chauffage<span class="scope-mini individuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>Individuel</span></li>
+        <li>Panneaux solaires (photovoltaïques)<span class="scope-mini collectif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15.5 14c2.5.3 4.5 2.2 4.5 4.5"/></svg>Collectif</span></li>
       </ul>
       <div class="row-list mt-12">
         <div class="row">
@@ -1733,8 +1780,8 @@
       <div class="card-body mt-12">
         En tout-électrique, plusieurs équipements sont <strong>privatifs</strong> : leur remplacement vous revient, individuellement, et ne se vote pas en AG.
         <ul class="bullets blue mt-12">
-          <li><strong>Ballon d'eau chaude (ECS)</strong> : à lui seul 47% de la facture énergétique. Le remplacer par un chauffe-eau thermodynamique est l'un des gestes les plus rentables, à votre initiative</li>
-          <li><strong>Convecteurs électriques</strong> : leur remplacement par des panneaux rayonnants ou une PAC air/air est à votre charge</li>
+          <li><strong>Ballon d'eau chaude</strong> : à lui seul 47% de la facture énergétique. Le remplacer par un chauffe-eau thermodynamique (qui puise la chaleur dans l'air, beaucoup plus économe) est l'un des gestes les plus rentables, à votre initiative</li>
+          <li><strong>Radiateurs électriques</strong> : les remplacer par des modèles récents ou une pompe à chaleur est à votre charge</li>
         </ul>
         <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
           ⓘ Ces travaux privatifs peuvent ouvrir droit à MaPrimeRénov' et à un éco-PTZ individuel, indépendamment du projet collectif de la copropriété.
@@ -1746,7 +1793,7 @@
       <div class="card-eyebrow text-blue">→ La suite</div>
       <div class="card-title">Le ravalement, une grande étape à anticiper</div>
       <p class="card-body mt-12">
-        Le DPE pose le diagnostic. Le <strong>ravalement de façade</strong>, lui, est une <strong>obligation périodique distincte</strong> à anticiper : le moment venu, ce sera l'occasion idéale d'y greffer une isolation (ITE) pour améliorer le DPE et débloquer les aides. C'est l'objet de la partie suivante, présentée à titre prospectif.
+        Le DPE pose le diagnostic. Le <strong>ravalement de façade</strong>, lui, est une <strong>obligation périodique distincte</strong> à anticiper : le moment venu, ce sera l'occasion idéale d'y greffer une isolation par l'extérieur pour améliorer le DPE et débloquer les aides. C'est l'objet de la partie suivante, présentée à titre prospectif.
       </p>
     </div>
   </section>
@@ -1763,7 +1810,7 @@
 
     <div class="card blue-tinted fade-up specular">
       <p class="card-body">
-        <strong>Projet distinct du DPE.</strong> Le ravalement concerne <strong>l'aspect et l'étanchéité des façades</strong> (obligation communale en Île-de-France, en principe tous les 10 ans). Il peut être couplé à une isolation (ITE) pour aussi améliorer l'énergie, mais c'est un chantier à part entière, voté séparément.
+        <strong>Projet distinct du DPE.</strong> Le ravalement concerne <strong>l'aspect et l'étanchéité des façades</strong> (obligation communale en Île-de-France, en principe tous les 10 ans). Il peut être couplé à une <strong>isolation thermique par l'extérieur</strong> (l'ITE : on enveloppe l'immeuble d'un manteau isolant sous le nouvel enduit) pour aussi améliorer l'énergie, mais c'est un chantier à part entière, voté séparément.
       </p>
     </div>
 
@@ -2030,7 +2077,7 @@
         <li>Honoraires d'architecte (obligatoires en copropriété)</li>
         <li>Assurance dommages-ouvrage</li>
         <li>Échafaudage si compté séparément (≈ 30 €/m²)</li>
-        <li>AMO, partiellement financée par l'Anah pour le scénario 2</li>
+        <li>Accompagnement (AMO), partiellement financé par l'Anah pour le scénario 2</li>
       </ul>
     </div>
 
@@ -2097,18 +2144,18 @@
             <div class="timeline-meta">
               <span class="timeline-meta-item"><strong>1-2 mois</strong></span>
               <span class="timeline-meta-sep">·</span>
-              <span class="timeline-meta-item">Architecte / AMO</span>
+              <span class="timeline-meta-item">Architecte / assistant</span>
             </div>
           </div>
         </div>
         <div class="timeline-step">
           <div class="timeline-num">4</div>
           <div class="timeline-body">
-            <div class="timeline-title">Appel d'offres : 3 devis min. RGE</div>
+            <div class="timeline-title">Demander au moins 3 devis (entreprises certifiées RGE)</div>
             <div class="timeline-meta">
               <span class="timeline-meta-item"><strong>2-3 mois</strong></span>
               <span class="timeline-meta-sep">·</span>
-              <span class="timeline-meta-item">Architecte / AMO</span>
+              <span class="timeline-meta-item">Architecte / assistant</span>
             </div>
           </div>
         </div>
@@ -2130,7 +2177,7 @@
             <div class="timeline-meta">
               <span class="timeline-meta-item"><strong>3-6 mois</strong></span>
               <span class="timeline-meta-sep">·</span>
-              <span class="timeline-meta-item">Syndic / AMO</span>
+              <span class="timeline-meta-item">Syndic / assistant</span>
             </div>
           </div>
         </div>
@@ -2176,7 +2223,7 @@
         </div>
         <div class="aide-rows">
           <div class="aide-row"><strong>Montant</strong><span>30-45% des travaux, plafond 25 000 €/logement</span></div>
-          <div class="aide-row"><strong>Condition</strong><span>Gain énergétique ≥ 35%, AMO obligatoire</span></div>
+          <div class="aide-row"><strong>Condition</strong><span>Gain énergétique d'au moins 35%, accompagnement AMO obligatoire</span></div>
           <div class="aide-row highlight"><strong>Potentiel</strong><span>jusqu'à ~2,3 M€ pour 92 logements</span></div>
         </div>
       </div>
@@ -2321,7 +2368,7 @@
       <div class="card-eyebrow text-orange">▸ Points clés du financement collectif</div>
       <ul class="bullets orange mt-12">
         <li>L'emprunt est voté en AG et souscrit par le syndicat, mais chaque copropriétaire choisit d'y adhérer ou de payer comptant sa quote-part</li>
-        <li>Une caution (type SACCEF) est généralement exigée pour garantir le prêt</li>
+        <li>Une caution (garantie bancaire, type SACCEF) est généralement exigée pour sécuriser le prêt</li>
         <li>En cas d'impayé d'un copropriétaire, le syndic peut engager un recouvrement, voire une hypothèque légale sur le lot</li>
         <li>Le fonds de travaux obligatoire (cotisation annuelle) constitue la première réserve à mobiliser</li>
       </ul>
@@ -2354,6 +2401,24 @@
         </ul>
       </div>
     </div>
+
+    <details class="glossary fade-up">
+      <summary>📖 Petit lexique des termes techniques</summary>
+      <div class="glossary-body">
+        <div class="glossary-item"><span class="glossary-term">DPE</span> · <span class="glossary-def">Diagnostic de performance énergétique. Note l'immeuble de A (très économe) à G (passoire) selon sa consommation d'énergie.</span></div>
+        <div class="glossary-item"><span class="glossary-term">ITE</span> · <span class="glossary-def">Isolation thermique par l'extérieur. On enveloppe les murs d'un isolant recouvert d'un nouvel enduit, sans perdre de surface habitable.</span></div>
+        <div class="glossary-item"><span class="glossary-term">PPT</span> · <span class="glossary-def">Plan pluriannuel de travaux. Feuille de route qui liste et chiffre les travaux à prévoir sur 10 ans, élaborée à partir du DPE.</span></div>
+        <div class="glossary-item"><span class="glossary-term">AG</span> · <span class="glossary-def">Assemblée générale des copropriétaires. C'est là que les décisions et les travaux collectifs sont votés.</span></div>
+        <div class="glossary-item"><span class="glossary-term">AMO</span> · <span class="glossary-def">Assistant à maîtrise d'ouvrage. Un professionnel qui accompagne la copropriété pour piloter le projet et monter les dossiers d'aides. Obligatoire pour MaPrimeRénov' Copropriété.</span></div>
+        <div class="glossary-item"><span class="glossary-term">RGE</span> · <span class="glossary-def">Reconnu garant de l'environnement. Label d'une entreprise qualifiée ; obligatoire pour avoir droit aux aides.</span></div>
+        <div class="glossary-item"><span class="glossary-term">CEE</span> · <span class="glossary-def">Certificats d'économies d'énergie. Une aide versée par les fournisseurs d'énergie (type EDF, Total) pour les travaux qui réduisent la consommation.</span></div>
+        <div class="glossary-item"><span class="glossary-term">Éco-PTZ</span> · <span class="glossary-def">Éco-prêt à taux zéro. Un prêt sans intérêts (0%) réservé aux travaux d'économie d'énergie.</span></div>
+        <div class="glossary-item"><span class="glossary-term">Tantièmes</span> · <span class="glossary-def">La part de l'immeuble que possède chaque copropriétaire (en millièmes). Sert à répartir les charges et le coût des travaux.</span></div>
+        <div class="glossary-item"><span class="glossary-term">Quote-part</span> · <span class="glossary-def">La somme qui vous revient personnellement dans une dépense collective, calculée selon vos tantièmes.</span></div>
+        <div class="glossary-item"><span class="glossary-term">Fonds de travaux</span> · <span class="glossary-def">Épargne obligatoire (loi ALUR) que la copropriété met de côté chaque année pour financer les gros travaux à venir.</span></div>
+        <div class="glossary-item"><span class="glossary-term">Pompe à chaleur</span> · <span class="glossary-def">Appareil qui capte la chaleur de l'air extérieur pour chauffer le logement ou l'eau, en consommant peu d'électricité.</span></div>
+      </div>
+    </details>
 
   </section>
 
