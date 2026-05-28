@@ -8,10 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="color-scheme" content="light" />
 <meta name="description" content="Synthèse DPE et estimation ravalement de façade pour la résidence Les Terrasses de l'Europe à Massy. Diagnostic énergétique, comparaison de scénarios chiffrés et aides mobilisables en 2026." />
-<meta property="og:title" content="Les Terrasses de l'Europe — DPE & Ravalement" />
-<meta property="og:description" content="Synthèse DPE et estimation ravalement de façade — 92 logements, Massy." />
+<meta property="og:title" content="Les Terrasses de l'Europe · DPE & Ravalement" />
+<meta property="og:description" content="Synthèse DPE et estimation ravalement de façade. 92 logements, Massy." />
 <meta property="og:type" content="website" />
-<title>Les Terrasses de l'Europe — DPE & Ravalement</title>
+<title>Les Terrasses de l'Europe · DPE & Ravalement</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,13 +42,13 @@
 
     /* Accents - SF-inspired, ajustés pour WCAG AA */
     --green: #34C759;          /* graphique uniquement (badges, ronds, lignes) */
-    --green-2: #1A7F37;        /* texte sur fond clair — AA 4.5:1 sur blanc */
+    --green-2: #1A7F37;        /* texte sur fond clair, AA 4.5:1 sur blanc */
     --green-soft: rgba(52, 199, 89, 0.14);
     --blue: #007AFF;            /* graphique */
-    --blue-2: #0040DD;          /* texte sur fond clair — AA */
+    --blue-2: #0040DD;          /* texte sur fond clair, AA */
     --blue-soft: rgba(0, 122, 255, 0.12);
     --orange: #FF9500;          /* graphique */
-    --orange-2: #B25700;        /* texte sur fond clair — AA */
+    --orange-2: #B25700;        /* texte sur fond clair, AA */
     --orange-soft: rgba(255, 149, 0, 0.16);
     --red: #D70015;             /* AA texte */
     --red-soft: rgba(215, 0, 21, 0.10);
@@ -181,24 +181,53 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: calc(var(--sat) + 12px) max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
+    padding: calc(var(--sat) + 12px) max(20px, env(safe-area-inset-right)) 10px max(20px, env(safe-area-inset-left));
     background: var(--surface-elevated);
     backdrop-filter: saturate(180%) blur(30px);
     -webkit-backdrop-filter: saturate(180%) blur(30px);
-    border-bottom: 1px solid var(--line);
-    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+    transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
   }
+  /* État condensé : appliqué via JS quand on scrolle */
+  .navbar.condensed {
+    border-bottom-color: var(--line);
+    box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+  }
+
+  /* Barre de progression de lecture */
+  .nav-progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    border-radius: 0 2px 2px 0;
+    transition: width 0.1s linear;
+    z-index: 2;
+  }
+
   .navbar-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    /* hauteur animée pour la condensation */
+    max-height: 44px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin 0.35s ease;
+  }
+  .navbar.condensed .navbar-row {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: -10px;
   }
   .navbar-title {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ink);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -206,22 +235,54 @@
   }
   .navbar-eyebrow {
     font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.04em;
+    font-weight: 700;
+    color: var(--green-2);
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     margin-bottom: 1px;
   }
 
   /* Pills navigation */
+  .pills-wrap {
+    position: relative;
+    margin-top: 12px;
+    transition: margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .navbar.condensed .pills-wrap {
+    margin-top: 0;
+  }
+  /* Fondus latéraux indiquant le scroll possible */
+  .pills-wrap::before,
+  .pills-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 28px;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .pills-wrap::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--surface-elevated), transparent);
+  }
+  .pills-wrap::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--surface-elevated), transparent);
+  }
+  .pills-wrap.scroll-left::before { opacity: 1; }
+  .pills-wrap.scroll-right::after { opacity: 1; }
+
   .pills {
     display: flex;
-    gap: 6px;
-    margin-top: 12px;
+    gap: 7px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px;
+    padding: 2px 0;
+    scrollbar-width: none;
   }
   .pills::-webkit-scrollbar { display: none; }
   .pill {
@@ -230,23 +291,40 @@
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+    gap: 6px;
     border-radius: 100px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--ink-2);
-    background: transparent;
-    border: 1px solid var(--line-strong);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    scroll-snap-align: start;
+    color: var(--muted);
+    background: var(--card-bg);
+    border: 1px solid transparent;
+    transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    scroll-snap-align: center;
+    white-space: nowrap;
+  }
+  .pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    transform: scale(0);
+  }
+  .pill-dot.green { background: var(--green); }
+  .pill-dot.blue { background: var(--blue); }
+  .pill-dot.orange { background: var(--orange); }
+  .pill[aria-current="location"] .pill-dot,
+  .pill.active .pill-dot {
+    transform: scale(1);
   }
   .pill[aria-current="location"], .pill.active {
     color: var(--ink);
     background: var(--surface-solid);
-    border-color: transparent;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.06);
+    border-color: var(--line);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.08);
   }
-  .pill:active { transform: scale(0.96); }
+  .pill:active { transform: scale(0.95); }
 
   /* ============ MAIN CONTAINER ============ */
   main {
@@ -855,6 +933,442 @@
   .tag.orange { background: var(--orange-soft); color: var(--orange-2); }
   .tag.gray { background: rgba(0,0,0,0.06); color: var(--muted); }
 
+  /* ============ SIMULATEUR ============ */
+  .simulator {
+    background: var(--surface-solid);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .simulator::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 12px; right: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,122,255,0.4), transparent);
+  }
+  .sim-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue-2);
+    margin-bottom: 6px;
+  }
+  .sim-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .sim-field {
+    margin-bottom: 18px;
+  }
+  .sim-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .sim-label-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--body);
+  }
+  .sim-value-display {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .sim-value-display .unit {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 2px;
+  }
+
+  /* Slider */
+  .sim-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 100px;
+    background: var(--line-strong);
+    outline: none;
+    margin: 6px 0;
+  }
+  .sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .sim-slider::-webkit-slider-thumb:active { transform: scale(1.12); }
+  .sim-slider::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.12);
+    cursor: pointer;
+  }
+  .sim-range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Input numérique */
+  .sim-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 12px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sim-input-wrap:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-soft);
+  }
+  .sim-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    outline: none;
+    width: 100%;
+    -moz-appearance: textfield;
+  }
+  .sim-input::-webkit-outer-spin-button,
+  .sim-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .sim-input-unit {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Résultats du simulateur */
+  /* ============ ONGLETS SCÉNARIOS ============ */
+  .scenario-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--card-bg);
+    border-radius: 100px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .scenario-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 8px;
+    min-height: 48px;
+    justify-content: center;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+  .scenario-tab .tab-sub {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.7;
+  }
+  .scenario-tab[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--surface-solid);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 3px 10px rgba(0,0,0,0.08);
+  }
+  .scenario-tab.tab-s2[aria-selected="true"] {
+    color: var(--blue-2);
+  }
+  .scenario-tab:active { transform: scale(0.97); }
+
+  /* Panneaux : un seul visible à la fois */
+  .scenario-panel { display: none; }
+  .scenario-panel.active { display: block; animation: panelFade 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .scenario-detail-panel { display: none; }
+  .scenario-detail-panel.active { display: block; animation: panelFade 0.35s cubic-bezier(0.16,1,0.3,1); }
+  @keyframes panelFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Résultat simulateur en mode plein (un seul scénario affiché) */
+  .sim-result-full {
+    border-radius: var(--r-md);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sim-result-full.s1 {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+  }
+  .sim-result-full.s2 {
+    background: linear-gradient(140deg, var(--blue-soft), var(--card-bg));
+    border: 1px solid rgba(0,122,255,0.22);
+  }
+
+  .sim-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .sim-result {
+    border-radius: var(--r-md);
+    padding: 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sim-result.s1 {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+  }
+  .sim-result.s2 {
+    background: linear-gradient(140deg, var(--blue-soft), var(--card-bg));
+    border: 1px solid rgba(0,122,255,0.22);
+  }
+  .sim-result-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .sim-result.s2 .sim-result-tag,
+  .sim-result-full.s2 .sim-result-tag { color: var(--blue-2); }
+  .sim-result-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .sim-result-full .sim-result-name { font-size: 18px; margin-bottom: 16px; }
+  .sim-result-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  .sim-result-row:last-child { margin-bottom: 0; }
+  .sim-result-mini {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .sim-result-amount {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-result-full .sim-result-amount { font-size: 30px; }
+  .sim-result-amount.green { color: var(--green-2); }
+  .sim-result-amount.muted-amount { color: var(--muted); font-size: 16px; }
+
+  /* Ventilation des coûts dans le simulateur */
+  .sim-breakdown {
+    margin: 4px 0 10px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .sim-result-full .sim-breakdown { margin: 8px 0 14px; padding: 14px 0; }
+  .sim-bd-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 3px 0;
+    color: var(--muted);
+  }
+  .sim-result-full .sim-bd-row { font-size: 14px; padding: 5px 0; }
+  .sim-bd-row span:last-child {
+    font-weight: 600;
+    color: var(--body);
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-bd-row.sim-bd-aide span { color: var(--green-2); font-weight: 700; }
+  .sim-total-row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 4px;
+  }
+  .sim-aide-line {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .sim-aide-line.green-line { color: var(--green-2); }
+  .sim-disclaimer {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: var(--r-md);
+    background: var(--orange-soft);
+    border: 1px solid rgba(255, 149, 0, 0.25);
+  }
+  .sim-disclaimer-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--orange-2);
+  }
+  .sim-disclaimer p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--body);
+  }
+  .sim-disclaimer strong {
+    color: var(--orange-2);
+    font-weight: 700;
+  }
+
+  /* ============ FINANCEMENT (prêts) ============ */
+  .loan {
+    background: var(--surface-solid);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .loan-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .loan-title-wrap { flex: 1; min-width: 0; }
+  .loan-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .loan-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .loan-rate {
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .loan-rate-value {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--green-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .loan-rate-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .loan-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .loan-spec {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--card-bg);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--body);
+  }
+  .loan-spec strong { color: var(--ink); }
+
+  /* Comparatif banques */
+  .bank-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .bank {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 14px;
+  }
+  .bank-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .bank-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
   /* Section accent line */
   .accent-line {
     width: 32px; height: 3px;
@@ -905,16 +1419,19 @@
 <nav class="navbar" id="navbar" aria-label="Navigation principale">
   <div class="navbar-row">
     <div style="min-width:0;flex:1;">
-      <div class="navbar-eyebrow">Synthèse</div>
+      <div class="navbar-eyebrow" id="navEyebrow">Synthèse</div>
       <div class="navbar-title" id="navTitle">Les Terrasses de l'Europe</div>
     </div>
   </div>
-  <div class="pills" id="pills" role="navigation" aria-label="Navigation par section">
-    <button class="pill active" data-target="hero" type="button" aria-current="location" aria-controls="hero">Vue d'ensemble</button>
-    <button class="pill" data-target="dpe" type="button" aria-controls="dpe">DPE</button>
-    <button class="pill" data-target="ravalement" type="button" aria-controls="ravalement">Ravalement</button>
-    <button class="pill" data-target="etapes" type="button" aria-controls="etapes">Étapes &amp; aides</button>
+  <div class="pills-wrap" id="pillsWrap">
+    <div class="pills" id="pills" role="navigation" aria-label="Navigation par section">
+      <button class="pill active" data-target="hero" type="button" aria-current="location" aria-controls="hero"><span class="pill-dot green"></span>Vue d'ensemble</button>
+      <button class="pill" data-target="dpe" type="button" aria-controls="dpe"><span class="pill-dot green"></span>DPE</button>
+      <button class="pill" data-target="ravalement" type="button" aria-controls="ravalement"><span class="pill-dot blue"></span>Ravalement</button>
+      <button class="pill" data-target="etapes" type="button" aria-controls="etapes"><span class="pill-dot orange"></span>Aides &amp; financement</button>
+    </div>
   </div>
+  <div class="nav-progress" id="navProgress" aria-hidden="true"></div>
 </nav>
 
 <main id="main-content">
@@ -944,7 +1461,7 @@
     </div>
   </div>
 
-  <!-- ============ SECTION 1 — DPE ============ -->
+  <!-- ============ SECTION 1 : DPE ============ -->
   <section class="section" id="dpe">
     <div class="section-head fade-up">
       <div class="section-num green specular">1</div>
@@ -968,7 +1485,7 @@
           Points forts
         </div>
         <ul class="bullets green">
-          <li>Étiquettes C/A — pas de risque passoire</li>
+          <li>Étiquettes C/A, pas de risque passoire</li>
           <li>Murs isolés (ITI) + toiture (ITE)</li>
           <li>Fenêtres PVC double vitrage VIR</li>
           <li>VMC hygroréglable</li>
@@ -982,7 +1499,7 @@
         </div>
         <ul class="bullets red">
           <li>Chauffage par convecteurs électriques</li>
-          <li>ECS électrique — 47% des coûts</li>
+          <li>ECS électrique : 47% des coûts</li>
           <li>Déperditions ventilation 41-44%</li>
           <li>Ponts thermiques 18-23%</li>
           <li>Aucun renouvelable sur bât. C</li>
@@ -1087,38 +1604,137 @@
         </div>
       </div>
       <p class="card-body mt-12" style="font-size:12px;color:var(--muted);font-style:italic;">
-        ⓘ L'isolation seule ne suffit pas pour atteindre B — le changement de chauffage est indispensable.
+        ⓘ L'isolation seule ne suffit pas pour atteindre B : le changement de chauffage est indispensable.
       </p>
     </div>
   </section>
 
-  <!-- ============ SECTION 2 — RAVALEMENT ============ -->
+  <!-- ============ SECTION 2 : RAVALEMENT ============ -->
   <section class="section" id="ravalement">
     <div class="section-head fade-up">
       <div class="section-num blue specular">2</div>
       <div class="section-meta">
         <div class="section-eyebrow">Façades</div>
-        <h2 class="section-title">Ravalement — deux scénarios</h2>
+        <h2 class="section-title">Ravalement : deux scénarios</h2>
       </div>
     </div>
 
     <div class="card fade-up">
       <p class="card-body">
-        Surface estimée : <strong>~1 400-1 500 m²</strong> de façade opaque.
-        État actuel <em>bon, quelques fissures mineures.</em>
+        Surface estimée : <strong>~2 200 m²</strong> de façade (murs extérieurs des 2 bâtiments, données DPE).
+        État actuel <em>moyen à bon (estimation prudente, avec reprises).</em>
       </p>
     </div>
 
-    <div class="scenarios fade-up">
+    <div class="simulator fade-up" role="group" aria-label="Simulateur de quote-part de ravalement">
+      <div class="sim-eyebrow">▸ Simulateur copropriétaire</div>
+      <div class="sim-title">Ce que le ravalement pourrait vous coûter</div>
+      <p class="card-body" style="font-size:13px;color:var(--muted);margin-bottom:18px;">
+        Entrez la surface de <strong style="color:var(--body);">votre appartement</strong> pour estimer votre quote-part personnelle des travaux.
+      </p>
 
-      <div class="scenario specular">
+      <div class="sim-field">
+        <div class="sim-label">
+          <label class="sim-label-text" for="sim-input">Surface de mon appartement</label>
+          <span class="sim-value-display"><span id="sim-display">65</span><span class="unit">m²</span></span>
+        </div>
+        <div class="sim-input-wrap">
+          <input
+            class="sim-input"
+            id="sim-input"
+            type="number"
+            inputmode="numeric"
+            min="10"
+            max="400"
+            step="1"
+            value="65"
+            aria-label="Surface de mon appartement en mètres carrés"
+          />
+          <span class="sim-input-unit">m² habitables</span>
+        </div>
+        <input
+          class="sim-slider"
+          id="sim-slider"
+          type="range"
+          min="10"
+          max="200"
+          step="1"
+          value="65"
+          aria-label="Curseur de surface de l'appartement"
+        />
+        <div class="sim-range-labels">
+          <span>10 m²</span>
+          <span>200 m²</span>
+        </div>
+      </div>
+
+      <div class="scenario-tabs" role="tablist" aria-label="Choix du scénario">
+        <button class="scenario-tab tab-s1" id="tab-s1" role="tab" aria-selected="true" aria-controls="panel-s1" type="button">
+          Ravalement seul
+          <span class="tab-sub">entretien</span>
+        </button>
+        <button class="scenario-tab tab-s2" id="tab-s2" role="tab" aria-selected="false" aria-controls="panel-s2" type="button">
+          Ravalement + ITE
+          <span class="tab-sub">★ recommandé</span>
+        </button>
+      </div>
+
+      <!-- Panneau Scénario 1 -->
+      <div class="scenario-panel active" id="panel-s1" role="tabpanel" aria-labelledby="tab-s1">
+        <div class="sim-result-full s1">
+          <div class="sim-result-tag">Scénario 1 · Ravalement seul</div>
+          <div class="sim-result-name">Votre quote-part personnelle</div>
+          <div class="sim-breakdown">
+            <div class="sim-bd-row"><span>Travaux façade</span><span id="s1-bd-travaux">780 €</span></div>
+            <div class="sim-bd-row"><span>Échafaudage</span><span id="s1-bd-echaf">200 €</span></div>
+            <div class="sim-bd-row"><span>Architecte + syndic</span><span id="s1-bd-archi">130 €</span></div>
+            <div class="sim-bd-row"><span>Assurance + divers</span><span id="s1-bd-assur">90 €</span></div>
+          </div>
+          <div class="sim-result-row sim-total-row">
+            <span class="sim-result-mini">Votre part tout compris</span>
+            <span class="sim-result-amount" id="sim-s1-part">1 200 - 1 900 €</span>
+          </div>
+          <div class="sim-aide-line">Aucune aide (entretien pur)</div>
+        </div>
+      </div>
+
+      <!-- Panneau Scénario 2 -->
+      <div class="scenario-panel" id="panel-s2" role="tabpanel" aria-labelledby="tab-s2" hidden>
+        <div class="sim-result-full s2">
+          <div class="sim-result-tag">Scénario 2 · Ravalement + ITE</div>
+          <div class="sim-result-name">Votre quote-part personnelle</div>
+          <div class="sim-breakdown">
+            <div class="sim-bd-row"><span>Travaux + ITE</span><span id="s2-bd-travaux">2 200 €</span></div>
+            <div class="sim-bd-row"><span>Échafaudage</span><span id="s2-bd-echaf">340 €</span></div>
+            <div class="sim-bd-row"><span>Architecte + syndic</span><span id="s2-bd-archi">370 €</span></div>
+            <div class="sim-bd-row sim-bd-aide"><span>Aides déduites</span><span id="s2-bd-aide">- 1 450 €</span></div>
+          </div>
+          <div class="sim-result-row sim-total-row">
+            <span class="sim-result-mini">Votre part après aides</span>
+            <span class="sim-result-amount green" id="sim-s2-part">1 700 - 3 100 €</span>
+          </div>
+          <div class="sim-aide-line green-line">~50% d'aides mobilisées</div>
+        </div>
+      </div>
+
+      <div class="sim-disclaimer" role="note">
+        <span class="sim-disclaimer-icon">⚠</span>
+        <p>
+          <strong>Estimation purement indicative.</strong> Calcul par règle de proportion (surface de votre lot rapportée aux 5 734 m² de la copropriété). La répartition réelle suit les <strong>tantièmes du règlement de copropriété</strong>, qui peuvent différer de la surface. Hypothèse prudente : façade en <strong>état moyen à bon</strong> (avec reprises), ~2 200 m², tarifs immeuble Île-de-France 2026 tout compris (travaux, échafaudage, architecte, syndic, assurance). Le montant final dépendra des devis votés en AG et des aides réellement accordées. Ni devis ni engagement.
+        </p>
+      </div>
+    </div>
+
+    <!-- Détail des scénarios, piloté par les mêmes onglets -->
+    <div class="scenario-detail-panel active" id="detail-s1" role="tabpanel" aria-labelledby="tab-s1">
+      <div class="scenario specular fade-up">
         <div class="scenario-eyebrow">Scénario 1</div>
         <h3 class="scenario-title">Ravalement seul</h3>
 
         <div class="scenario-stats">
           <div>
-            <div class="scenario-stat-label">Coût total</div>
-            <div class="scenario-stat-value">85 - 165 k€</div>
+            <div class="scenario-stat-label">Coût total copro</div>
+            <div class="scenario-stat-value">375 - 585 k€</div>
           </div>
           <div>
             <div class="scenario-stat-label">Reste à charge</div>
@@ -1128,8 +1744,8 @@
 
         <div class="row-list">
           <div class="row">
-            <span class="row-label">Tarif au m²</span>
-            <span class="row-value">60 - 110 €</span>
+            <span class="row-label">Tarif tout compris/m²</span>
+            <span class="row-value">170 - 265 €</span>
           </div>
           <div class="row">
             <span class="row-label">Aides</span>
@@ -1141,31 +1757,33 @@
           </div>
           <div class="row">
             <span class="row-label">Durée chantier</span>
-            <span class="row-value">6-12 semaines</span>
+            <span class="row-value">2-4 mois</span>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="scenario recommended specular">
+    <div class="scenario-detail-panel" id="detail-s2" role="tabpanel" aria-labelledby="tab-s2" hidden>
+      <div class="scenario recommended specular fade-up">
         <div class="scenario-badge">★ Recommandé</div>
         <div class="scenario-eyebrow">Scénario 2</div>
         <h3 class="scenario-title">Ravalement + ITE</h3>
 
         <div class="scenario-stats">
           <div>
-            <div class="scenario-stat-label">Coût total</div>
-            <div class="scenario-stat-value">250 - 420 k€</div>
+            <div class="scenario-stat-label">Coût total copro</div>
+            <div class="scenario-stat-value">595 - 910 k€</div>
           </div>
           <div>
             <div class="scenario-stat-label">Reste après aides</div>
-            <div class="scenario-stat-value green">130 - 250 k€</div>
+            <div class="scenario-stat-value green">300 - 455 k€</div>
           </div>
         </div>
 
         <div class="row-list">
           <div class="row">
-            <span class="row-label">Tarif au m²</span>
-            <span class="row-value">180 - 280 €</span>
+            <span class="row-label">Tarif tout compris/m²</span>
+            <span class="row-value">270 - 410 €</span>
           </div>
           <div class="row">
             <span class="row-label">MaPrimeRénov' Copro</span>
@@ -1189,7 +1807,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="card orange-tinted fade-up specular mt-16">
@@ -1199,7 +1816,7 @@
         <li>Honoraires d'architecte (obligatoires en copropriété)</li>
         <li>Assurance dommages-ouvrage</li>
         <li>Échafaudage si compté séparément (≈ 30 €/m²)</li>
-        <li>AMO — partiellement financée par l'Anah pour le scénario 2</li>
+        <li>AMO, partiellement financée par l'Anah pour le scénario 2</li>
       </ul>
     </div>
 
@@ -1212,18 +1829,18 @@
         et le surcoût ITE est en grande partie couvert par les aides énergétiques.
       </p>
       <p class="card-body mt-12" style="font-size:13px;color:var(--muted);font-style:italic;">
-        Bénéfice secondaire : valorisation patrimoniale, réduction des charges et amélioration du DPE — un argument fort à la revente ou location.
+        Bénéfice secondaire : valorisation patrimoniale, réduction des charges et amélioration du DPE, un argument fort à la revente ou location.
       </p>
     </div>
   </section>
 
-  <!-- ============ SECTION 3 — ÉTAPES ============ -->
+  <!-- ============ SECTION 3 : ÉTAPES ============ -->
   <section class="section" id="etapes">
     <div class="section-head fade-up">
       <div class="section-num orange specular">3</div>
       <div class="section-meta">
         <div class="section-eyebrow">Mode opératoire</div>
-        <h2 class="section-title">Étapes &amp; aides</h2>
+        <h2 class="section-title">Étapes, aides &amp; financement</h2>
       </div>
     </div>
 
@@ -1274,7 +1891,7 @@
         <div class="timeline-step">
           <div class="timeline-num">4</div>
           <div class="timeline-body">
-            <div class="timeline-title">Appel d'offres — 3 devis min. RGE</div>
+            <div class="timeline-title">Appel d'offres : 3 devis min. RGE</div>
             <div class="timeline-meta">
               <span class="timeline-meta-item"><strong>2-3 mois</strong></span>
               <span class="timeline-meta-sep">·</span>
@@ -1377,10 +1994,99 @@
         <div class="aide-rows">
           <div class="aide-row"><strong>IDF</strong><span>CDSR pour copropriétés en difficulté</span></div>
           <div class="aide-row"><strong>CoachCopro®</strong><span>accompagnement gratuit (APC)</span></div>
-          <div class="aide-row warn"><strong>⚠</strong><span>Prime Éco-logis 91 supprimée en 2026 — vérifier auprès de la mairie de Massy</span></div>
+          <div class="aide-row warn"><strong>⚠</strong><span>Prime Éco-logis 91 supprimée en 2026 : vérifier auprès de la mairie de Massy</span></div>
         </div>
       </div>
 
+    </div>
+
+    <div class="sub-head mt-20">Solutions de financement (prêts)</div>
+
+    <div class="card fade-up">
+      <p class="card-body">
+        Au-delà des subventions, plusieurs <strong>prêts dédiés aux copropriétés</strong> permettent d'étaler le reste à charge sans avance de trésorerie. Le syndicat des copropriétaires emprunte, chaque copropriétaire adhère à hauteur de sa quote-part.
+      </p>
+    </div>
+
+    <div class="stagger">
+
+      <div class="loan specular">
+        <div class="loan-head">
+          <div class="loan-title-wrap">
+            <div class="loan-title">Éco-PTZ collectif</div>
+            <div class="loan-sub">Prêt réglementé par l'État</div>
+          </div>
+          <div class="loan-rate">
+            <div class="loan-rate-value">0%</div>
+            <div class="loan-rate-label">d'intérêt</div>
+          </div>
+        </div>
+        <div class="loan-specs">
+          <span class="loan-spec">Jusqu'à <strong>30 000 €/logement</strong></span>
+          <span class="loan-spec">Durée <strong>15 à 20 ans</strong></span>
+          <span class="loan-spec">Sans condition de ressources</span>
+        </div>
+        <p class="card-body" style="font-size:13px;margin-top:12px;color:var(--muted);">
+          Réservé aux travaux d'amélioration énergétique (ITE, chauffage, fenêtres). Cumulable avec MaPrimeRénov' et les CEE. Distribué uniquement par <strong style="color:var(--body);">Domofinance</strong> et la <strong style="color:var(--body);">Caisse d'Épargne Île-de-France</strong>.
+        </p>
+      </div>
+
+      <div class="loan specular">
+        <div class="loan-head">
+          <div class="loan-title-wrap">
+            <div class="loan-title">Prêt Travaux Copropriété Domofinance</div>
+            <div class="loan-sub">Taux fixe bonifié par EDF</div>
+          </div>
+          <div class="loan-rate">
+            <div class="loan-rate-value" style="color:var(--blue-2);">100%</div>
+            <div class="loan-rate-label">finançable</div>
+          </div>
+        </div>
+        <div class="loan-specs">
+          <span class="loan-spec">Dès <strong>15 000 €</strong></span>
+          <span class="loan-spec">Durée <strong>3 à 12 ans</strong></span>
+          <span class="loan-spec">Remboursement trimestriel</span>
+        </div>
+        <p class="card-body" style="font-size:13px;margin-top:12px;color:var(--muted);">
+          Finance jusqu'à 100% du devis, y compris le ravalement avec isolation (travaux ouvrant droit aux CEE). Taux fixe avantageux. Au-delà de 100 000 €, prêt collectif ; en-dessous, prêt personnel par copropriétaire.
+        </p>
+      </div>
+
+      <div class="loan specular">
+        <div class="loan-head">
+          <div class="loan-title-wrap">
+            <div class="loan-title">Prêts collectifs Caisse d'Épargne IDF</div>
+            <div class="loan-sub">Copro 1, Copro 100 & avance de subvention</div>
+          </div>
+        </div>
+        <div class="loan-specs">
+          <span class="loan-spec">Finance le <strong>reste à charge</strong></span>
+          <span class="loan-spec">Avance des subventions</span>
+          <span class="loan-spec">Sécurise la trésorerie</span>
+        </div>
+        <p class="card-body" style="font-size:13px;margin-top:12px;color:var(--muted);">
+          Mécanisme unique d'<strong style="color:var(--body);">avance de subvention collective</strong> : la banque avance le montant des aides en attendant leur versement, évitant aux copropriétaires de débourser avant de toucher MaPrimeRénov'.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="card orange-tinted fade-up specular mt-12">
+      <div class="card-eyebrow text-orange">▸ Points clés du financement collectif</div>
+      <ul class="bullets orange mt-12">
+        <li>L'emprunt est voté en AG et souscrit par le syndicat, mais chaque copropriétaire choisit d'y adhérer ou de payer comptant sa quote-part</li>
+        <li>Une caution (type SACCEF) est généralement exigée pour garantir le prêt</li>
+        <li>En cas d'impayé d'un copropriétaire, le syndic peut engager un recouvrement, voire une hypothèque légale sur le lot</li>
+        <li>Le fonds de travaux obligatoire (cotisation annuelle) constitue la première réserve à mobiliser</li>
+      </ul>
+    </div>
+
+    <div class="card blue-tinted fade-up specular">
+      <div class="card-eyebrow text-blue">★ Cas réel documenté</div>
+      <div class="card-title">L'effet de levier du couplage ravalement + ITE</div>
+      <p class="card-body mt-12">
+        Sur un immeuble de 4 560 m² (source Hellio) : ravalement seul devisé à <strong>407 000 €</strong>, contre <strong>617 000 €</strong> en y ajoutant une ITE. Mais le couplage a débloqué environ <strong>91 000 € d'aides</strong>, et grâce aux économies d'énergie, le retour sur investissement n'a été que de <strong>6 ans</strong>.
+      </p>
     </div>
 
   </section>
@@ -1389,7 +2095,8 @@
     <p class="footer-text">
       Sources : DPE 20/05/2026 (ENERA Conseil) · France Rénov' · Anah · economie.gouv.fr · service-public.fr<br>
       Tarifs ravalement : renovationettravaux.fr, expert-ravalement.fr, travaux-maconnerie.fr (2026).<br>
-      <span style="display:inline-block;margin-top:8px;opacity:0.7;">Estimations indicatives — à confirmer par devis professionnels.</span>
+      Financement : Domofinance (EDF), Caisse d'Épargne Île-de-France, Hellio, mondeviscopro.fr (2026).<br>
+      <span style="display:inline-block;margin-top:8px;opacity:0.7;">Estimations indicatives, à confirmer par devis professionnels. Un crédit vous engage et doit être remboursé.</span>
     </p>
   </footer>
 
@@ -1434,23 +2141,47 @@
       }
     });
   });
-
-  // ============ ACTIVE PILL ON SCROLL ============
+  // ============ NAVIGATION STICKY INTELLIGENTE ============
   const sections = ['hero', 'dpe', 'ravalement', 'etapes'].map(id => document.getElementById(id));
   const navTitle = document.getElementById('navTitle');
-  const sectionTitles = {
-    hero: "Les Terrasses de l\u2019Europe",
-    dpe: 'DPE — Diagnostic',
-    ravalement: 'Ravalement de façade',
-    etapes: 'Étapes & aides'
+  const navEyebrow = document.getElementById('navEyebrow');
+  const navbar = document.getElementById('navbar');
+  const navProgress = document.getElementById('navProgress');
+  const pillsEl = document.getElementById('pills');
+  const pillsWrap = document.getElementById('pillsWrap');
+
+  const sectionMeta = {
+    hero: { title: "Les Terrasses de l\u2019Europe", eyebrow: 'Synthèse' },
+    dpe: { title: 'Diagnostic énergétique', eyebrow: 'Section 1' },
+    ravalement: { title: 'Ravalement de façade', eyebrow: 'Section 2' },
+    etapes: { title: 'Aides & financement', eyebrow: 'Section 3' }
   };
 
   let activeId = 'hero';
+
+  // Met à jour les fondus latéraux des pills selon la position de scroll horizontal
+  const updatePillFades = () => {
+    if (!pillsEl || !pillsWrap) return;
+    const scrollLeft = pillsEl.scrollLeft;
+    const maxScroll = pillsEl.scrollWidth - pillsEl.clientWidth;
+    pillsWrap.classList.toggle('scroll-left', scrollLeft > 4);
+    pillsWrap.classList.toggle('scroll-right', scrollLeft < maxScroll - 4);
+  };
+
   const updateActive = () => {
     const scrollY = window.scrollY;
-    const navHeight = document.getElementById('navbar').offsetHeight;
-    let current = 'hero';
+    const navHeight = navbar.offsetHeight;
 
+    // 1. Barre de progression de lecture
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(100, (scrollY / docHeight) * 100) : 0;
+    navProgress.style.width = progress + '%';
+
+    // 2. Condensation de la navbar après un petit scroll
+    navbar.classList.toggle('condensed', scrollY > 60);
+
+    // 3. Section active
+    let current = 'hero';
     sections.forEach(sec => {
       if (sec && sec.offsetTop - navHeight - 60 <= scrollY) {
         current = sec.id;
@@ -1468,7 +2199,8 @@
           p.removeAttribute('aria-current');
         }
       });
-      navTitle.textContent = sectionTitles[current];
+      navTitle.textContent = sectionMeta[current].title;
+      navEyebrow.textContent = sectionMeta[current].eyebrow;
 
       const activePill = document.querySelector('.pill.active');
       if (activePill) {
@@ -1479,6 +2211,7 @@
         });
       }
     }
+    updatePillFades();
   };
 
   let scrollTimer;
@@ -1487,22 +2220,166 @@
     scrollTimer = requestAnimationFrame(updateActive);
   }, { passive: true });
 
-  // ============ HAPTIC-LIKE FEEDBACK (touch only) ============
-  if (!supportsReducedMotion) {
-    document.querySelectorAll('.pill, .kpi, .card, .scenario, .aide').forEach(el => {
-      el.addEventListener('touchstart', () => {
-        el.style.transition = 'transform 0.15s ease';
-        el.style.transform = 'scale(0.98)';
-      }, { passive: true });
-      el.addEventListener('touchend', () => {
-        el.style.transform = '';
-        setTimeout(() => { el.style.transition = ''; }, 200);
-      }, { passive: true });
-      el.addEventListener('touchcancel', () => {
-        el.style.transform = '';
-      }, { passive: true });
-    });
+  if (pillsEl) {
+    pillsEl.addEventListener('scroll', updatePillFades, { passive: true });
   }
+  // init des fondus
+  setTimeout(updatePillFades, 100);
+  window.addEventListener('resize', updatePillFades, { passive: true });
+
+
+  // ============ SIMULATEUR QUOTE-PART COPROPRIÉTAIRE ============
+  (function() {
+    const input = document.getElementById('sim-input');
+    const slider = document.getElementById('sim-slider');
+    const display = document.getElementById('sim-display');
+    const s1part = document.getElementById('sim-s1-part');
+    const s2part = document.getElementById('sim-s2-part');
+
+    if (!input || !slider) return;
+
+    // ---- Données copropriété (issues des DPE) ----
+    const SURFACE_TOTALE = 5734;     // m² habitables (4438 + 1296)
+    const FACADE_M2 = 2200;          // surface façade développée (murs ext. DPE : 1561 + 672)
+
+    // ---- Tarifs Île-de-France 2026 (sourcés, hors échafaudage) ----
+    // Hypothèse : façade en état MOYEN À BON (piochement, reprise enduits, traitement fissures)
+    // Scénario 1 : ravalement complet avec reprises
+    const S1_FACADE_MIN = 130, S1_FACADE_MAX = 200;  // €/m² travaux façade IDF
+    // Scénario 2 : ravalement + ITE
+    const S2_FACADE_MIN = 220, S2_FACADE_MAX = 330;  // €/m² travaux + ITE IDF
+
+    const ECHAF_MIN = 20, ECHAF_MAX = 35;            // €/m² échafaudage immeuble R+5/6
+    const ANNEXES_RATE = 0.13;                       // architecte+syndic+assurance+SPS ~13%
+    const ARCHI_SYNDIC_SHARE = 0.12;                 // part archi+syndic dans les annexes
+    const AIDE_RATE = 0.50;                          // ~50% d'aides sur scénario 2 (ITE éligible)
+
+    function euro(v) {
+      const r = Math.round(v / 10) * 10;
+      return r.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + ' €';
+    }
+    function range(min, max) {
+      return euro(min) + ' à ' + euro(max).replace(' €', '') + ' €';
+    }
+
+    // calcule un poste pour la quote-part (moyenne des bornes pour la ventilation)
+    function mid(min, max) { return (min + max) / 2; }
+
+    function update(m2) {
+      m2 = Math.max(10, Math.min(400, m2 || 0));
+      display.textContent = m2.toLocaleString('fr-FR');
+      const quote = m2 / SURFACE_TOTALE;
+
+      // ----- SCÉNARIO 1 : ravalement seul -----
+      // Travaux façade
+      const s1TravMin = FACADE_M2 * S1_FACADE_MIN;
+      const s1TravMax = FACADE_M2 * S1_FACADE_MAX;
+      // Échafaudage
+      const echafMin = FACADE_M2 * ECHAF_MIN;
+      const echafMax = FACADE_M2 * ECHAF_MAX;
+      // Annexes (sur travaux + échafaudage)
+      const s1BaseMin = s1TravMin + echafMin;
+      const s1BaseMax = s1TravMax + echafMax;
+      const s1AnnexMin = s1BaseMin * ANNEXES_RATE;
+      const s1AnnexMax = s1BaseMax * ANNEXES_RATE;
+      const s1TotalMin = s1BaseMin + s1AnnexMin;
+      const s1TotalMax = s1BaseMax + s1AnnexMax;
+
+      // Quote-part (ventilation sur valeur moyenne)
+      const s1AnnexMid = mid(s1BaseMin, s1BaseMax) * ANNEXES_RATE;
+      setText('s1-bd-travaux', euro(mid(s1TravMin, s1TravMax) * quote));
+      setText('s1-bd-echaf', euro(mid(echafMin, echafMax) * quote));
+      setText('s1-bd-archi', euro(s1AnnexMid * 0.7 * quote));
+      setText('s1-bd-assur', euro(s1AnnexMid * 0.3 * quote));
+      s1part.textContent = range(s1TotalMin * quote, s1TotalMax * quote);
+
+      // ----- SCÉNARIO 2 : ravalement + ITE -----
+      const s2TravMin = FACADE_M2 * S2_FACADE_MIN;
+      const s2TravMax = FACADE_M2 * S2_FACADE_MAX;
+      const s2BaseMin = s2TravMin + echafMin;
+      const s2BaseMax = s2TravMax + echafMax;
+      const s2AnnexMin = s2BaseMin * ANNEXES_RATE;
+      const s2AnnexMax = s2BaseMax * ANNEXES_RATE;
+      const s2GrossMin = s2BaseMin + s2AnnexMin;
+      const s2GrossMax = s2BaseMax + s2AnnexMax;
+      // Aides (déduites du brut)
+      const s2AideMin = s2GrossMin * AIDE_RATE;
+      const s2AideMax = s2GrossMax * AIDE_RATE;
+      const s2NetMin = s2GrossMin - s2AideMin;
+      const s2NetMax = s2GrossMax - s2AideMax;
+
+      setText('s2-bd-travaux', euro(mid(s2TravMin, s2TravMax) * quote));
+      setText('s2-bd-echaf', euro(mid(echafMin, echafMax) * quote));
+      setText('s2-bd-archi', euro(mid(s2AnnexMin, s2AnnexMax) * quote));
+      setText('s2-bd-aide', '- ' + euro(mid(s2AideMin, s2AideMax) * quote));
+      s2part.textContent = range(s2NetMin * quote, s2NetMax * quote);
+    }
+
+    function setText(id, txt) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    }
+
+    input.addEventListener('input', () => {
+      const val = parseInt(input.value) || 0;
+      slider.value = Math.min(Math.max(val, parseInt(slider.min)), parseInt(slider.max));
+      update(val);
+    });
+    slider.addEventListener('input', () => {
+      const val = parseInt(slider.value);
+      input.value = val;
+      update(val);
+    });
+
+    update(parseInt(input.value) || 65);
+  })();
+
+  // ============ ONGLETS SCÉNARIOS ============
+  (function() {
+    const tabs = document.querySelectorAll('.scenario-tab');
+    if (!tabs.length) return;
+
+    const panels = {
+      'tab-s1': ['panel-s1', 'detail-s1'],
+      'tab-s2': ['panel-s2', 'detail-s2']
+    };
+
+    function activate(tabId) {
+      tabs.forEach(t => {
+        const selected = t.id === tabId;
+        t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+      // Affiche/masque tous les panneaux
+      Object.entries(panels).forEach(([id, panelIds]) => {
+        const show = id === tabId;
+        panelIds.forEach(pid => {
+          const el = document.getElementById(pid);
+          if (!el) return;
+          el.classList.toggle('active', show);
+          if (show) { el.removeAttribute('hidden'); }
+          else { el.setAttribute('hidden', ''); }
+        });
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => activate(tab.id));
+      // Navigation clavier entre onglets (flèches)
+      tab.addEventListener('keydown', (e) => {
+        const list = Array.from(tabs);
+        const i = list.indexOf(tab);
+        let next = null;
+        if (e.key === 'ArrowRight') next = list[(i + 1) % list.length];
+        else if (e.key === 'ArrowLeft') next = list[(i - 1 + list.length) % list.length];
+        if (next) {
+          e.preventDefault();
+          activate(next.id);
+          next.focus();
+        }
+      });
+    });
+  })();
+
 </script>
 
 </body>
